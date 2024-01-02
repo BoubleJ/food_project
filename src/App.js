@@ -52,7 +52,7 @@ function App() {
           onClick={() => {
             axios
               .get(
-                "http://openapi.foodsafetykorea.go.kr/api/sample/COOKRCP01/json/5/5"
+                "http://openapi.foodsafetykorea.go.kr/api/sample/COOKRCP01/json/1/5", 
               )
               .then((결과) => {
                 setFoodData(결과.data)
@@ -69,7 +69,17 @@ function App() {
         <br></br>
         <br></br>
         <br></br>
- 
+        {foodData.COOKRCP01.row.map((recipe, index) => (
+  <div key={index}>
+    <h3>{recipe.RCP_NM}</h3>
+    <p>{recipe.RCP_PARTS_DTLS}</p>
+    {/* 추가적인 정보 출력 */}
+    <p>조리 방법: {recipe.RCP_WAY2}</p>
+    <p>칼로리: {recipe.INFO_ENG}</p>
+    {/* 필요한 정보를 추가로 출력하실 수 있습니다. */}
+    <img src={recipe.MANUAL_IMG01} alt={`레시피 이미지 ${index}`} />
+  </div>
+))}
       </div>
     </>
   );
