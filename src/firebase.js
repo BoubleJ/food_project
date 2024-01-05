@@ -1,16 +1,23 @@
-import firebase from 'firebase';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore  } from "firebase/firestore/lite";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FB_API_KEY,
-  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FB_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FB_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FB_API_ID
+  apiKey: "AIzaSyAf2wElzSjok8_ntFF7wiD9y66vZ5mWjsM",
+  authDomain: "food-project-54789.firebaseapp.com",
+  projectId: "food-project-54789",
+  storageBucket: "food-project-54789.appspot.com",
+  messagingSenderId: "76700856818",
+  appId: "1:76700856818:web:b2ebcd1cb7b6898b537b6b",
+  measurementId: "G-TZYLC37EPQ"
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app)
 
-const db = firebaseApp.firestore();
-
-export {firebase, firebaseApp, db};
+export default db
