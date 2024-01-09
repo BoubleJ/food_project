@@ -1,21 +1,54 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
+import algoliasearch from "algoliasearch/lite";
+import {  InstantSearch,
+  SearchBox,
+  Hits,
+  RefinementList,
+  Highlight,
+  Configure }
+from "react-instantsearch-hooks-web";
+
+const searchClient = algoliasearch(
+  process.env.REACT_APP_ALGOLIA_ID,
+  process.env.REACT_APP_ALGOLIA_SEARCH_KEY
+); // 환경 변수로 관리
 
 function App() {
   const [text, setText] = useState("");
   const [foodGroup, setFoodGroup] = useState([]);
   const [foodData, setFoodData] = useState();
 
-
   const [data, setData] = useState([]);
   const [recipeData, setRecipeData] = useState([]);
+
+
+
+
+
+  const Post = ({ hit }) => {
+    return (
+      <article>
+        <h1>
+          <Highlight attribute="title" hit={hit} />
+        </h1>
+        <p>
+          <Highlight attribute="content" hit={hit} />
+        </p>
+
+      </article>
+    );
+  };
+
+
+
 
   useEffect(() => {
     const fetchRecipeData = async () => {
       try {
-        const recipeCollectionRef = collection(db, 'recipe');
+        const recipeCollectionRef = collection(db, "recipe");
         const querySnapshot = await getDocs(recipeCollectionRef);
 
         const recipes = querySnapshot.docs.map((doc) => ({
@@ -25,7 +58,7 @@ function App() {
 
         setRecipeData(recipes);
       } catch (error) {
-        console.error('Error fetching recipe data:', error);
+        console.error("Error fetching recipe data:", error);
       }
     };
 
@@ -36,18 +69,21 @@ function App() {
     const fetchData = async () => {
       try {
         // Reference to the 'yourCollection' collection in Firestore
-        const collectionRef = collection(db, 'recipe');
+        const collectionRef = collection(db, "recipe");
 
         // Fetch documents from the collection
         const snapshot = await getDocs(collectionRef);
 
         // Extract data from the snapshot
-        const fetchedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const fetchedData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
         // Update the component state with the fetched data
         setData(fetchedData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -93,30 +129,48 @@ function App() {
           등록
         </button>
         <br></br>
-     
+        <InstantSearch searchClient={searchClient} indexName="recipe">
+        <SearchBox />
+    
+      <Hits hitComponent={Post} />
+   
+
+       
+        </InstantSearch>
+
         <br></br>
         <br></br>
         <div>
-      <h1>Recipe Component</h1>
-      <ul>
-        {recipeData.map((recipe) => (
-          <li key={recipe.id}>
-            <h2>Recipe ID: {recipe.id}</h2>
-            <ul>
-              {recipe.COOKRCP01.row.map((row, index) => (
-                <li key={index}>
-                  Hash Tag: {row.RCP_NM}, {row.RCP_PARTS_DTLS}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div>
+          
+          <ul>
+            {recipeData.map((recipe) => ( 
+              <li key={recipe.id}>
+       
+                <ul>
+                  {recipe.COOKRCP01.row.map((row, index) => (
+                    <li key={index}>
+                      <br></br>
         <br></br>
-        <div>
-      
-    </div>
+                  
+                      <br></br>
+                      <p>{row.RCP_NM}</p>
+                      <br></br>
+                      <p>식재료</p>
+                    
+                      <p>{row.RCP_PARTS_DTLS}</p>
+                      
+                     
+                      <br></br>
+    
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <br></br>
+        <div></div>
         <br></br>
         <br></br>
         <br></br>
