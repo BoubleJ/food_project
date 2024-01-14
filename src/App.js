@@ -4,6 +4,7 @@ import "./index.css";
 import { collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
 import algoliasearch from "algoliasearch/lite";
+import reading_glasses from './reading_glasses.png'
 import {  InstantSearch,
   SearchBox,
   Hits,
@@ -106,24 +107,53 @@ function App() {
   return (
     <>
       <div className="m-10 bg-sky-100 relative">
-        <p className="text-4xl">중남마(중요한건 남기지 않는 마음)<strong>로고</strong></p>
-        <div className="absolute left-0 right-0 mx-auto w-96">
-        <input
-          className="border-solid border-black mt-14 mb-7 w-80"
-          placeholder="식재료를 입력하세요"
-          onChange={handleChange}
-          value={text}
-        />
-           <button
-          className="border-solid border-black bg-slate-300 mr-7"
-          type="button"
-          onClick={handleConfirm}
-        >
-          등록
-        </button>
-        <button className="w-24 border-solid border-black bg-slate-300 h-12 mb-4">
+        <p className="text-4xl mb-14">ReFriFree<strong>로고</strong></p>
+        <div className="mx-96">
+   
+
+
+
+
+<div>
+     
+        <div className="relative mt-2 rounded-md shadow-sm">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+         
+          </div>
+          <input
+            type="text"
+            onChange={handleChange}
+            value={text}
+            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="식재료를 입력하세요"
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center">
+           
+            <div
+              id="currency"
+              name="currency"
+              className="h-full pt-1 pb-1 pr-7"
+            >
+            <img src={reading_glasses} alt="" className="w-8 h-full hover:cursor-pointer" 
+             onClick={handleConfirm}></img>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    
+        <button className="w-40 border-solid border-black bg-slate-300 h-12 mb-4 mt-4 m-auto block  rounded-md">
           레시피 검색
         </button>
+
+
+    
+        
+  
+       
         {foodGroup.map((a, i) => {
           return (
             <ul>
@@ -133,8 +163,10 @@ function App() {
         })}
        
         </div>
-       
 
+        
+       
+        
        
 
         <br></br>
