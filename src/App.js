@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./index.css";
 import { collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
@@ -104,30 +105,40 @@ function App() {
 
   return (
     <>
-      <div className="m-60">
+      <div className="m-10 bg-sky-100 relative">
+        <p className="text-4xl">중남마(중요한건 남기지 않는 마음)<strong>로고</strong></p>
+        <div className="absolute left-0 right-0 mx-auto w-96">
         <input
-          className="border-solid border-black"
+          className="border-solid border-black mt-14 mb-7 w-80"
           placeholder="식재료를 입력하세요"
           onChange={handleChange}
           value={text}
         />
-
-        {foodGroup.map((a, i) => {
-          return (
-            <ul>
-              <li key={i}>{foodGroup[i]}</li>
-            </ul>
-          );
-        })}
-
-        <br></br>
-        <button
-          className="border-solid border-black bg-slate-300"
+           <button
+          className="border-solid border-black bg-slate-300 mr-7"
           type="button"
           onClick={handleConfirm}
         >
           등록
         </button>
+        <button className="w-24 border-solid border-black bg-slate-300 h-12 mb-4">
+          레시피 검색
+        </button>
+        {foodGroup.map((a, i) => {
+          return (
+            <ul>
+              <li key={i}> • {foodGroup[i]}</li>
+            </ul>
+          );
+        })}
+       
+        </div>
+       
+
+       
+
+        <br></br>
+     
         <br></br>
         <InstantSearch searchClient={searchClient} indexName="recipe">
         <SearchBox />
@@ -140,35 +151,34 @@ function App() {
 
         <br></br>
         <br></br>
-        <div>
-          
-          <ul>
-            {recipeData.map((recipe) => ( 
-              <li key={recipe.id}>
-       
-                <ul>
-                  {recipe.COOKRCP01.row.map((row, index) => (
-                    <li key={index}>
-                      <br></br>
         <br></br>
-                  
-                      <br></br>
-                      <p>{row.RCP_NM}</p>
-                      <br></br>
-                      <p>식재료</p>
-                    
-                      <p>{row.RCP_PARTS_DTLS}</p>
-                      
-                     
-                      <br></br>
-    
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <br></br>
+        <br></br>
+        <button
+          className="border-solid border-black bg-slate-300"
+          type="button"
+          onClick={() => {
+            axios
+              .get(
+                "http://openapi.foodsafetykorea.go.kr/api/72121c2cafd94dc49cce/COOKRCP01/json/1/10"
+              )
+              .then((결과) => {
+                setFoodData(결과.data);
+                console.log(결과.data);
+              })
+              .catch(() => {
+                console.log("실패함");
+              });
+          }}
+        >
+          오픈api출력
+        </button>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        
         <br></br>
         <div></div>
         <br></br>
@@ -214,6 +224,8 @@ function App() {
               <img src={recipe.MANUAL_IMG10} alt="" />
               <p>{recipe.MANUAL11}</p>
               <img src={recipe.MANUAL_IMG11} alt="" />
+              <br></br>
+        <br></br>
             </div>
           ))
         ) : (
