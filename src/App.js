@@ -107,7 +107,7 @@ function App() {
   return (
     <>
       <div className="m-10 bg-sky-100 relative">
-        <p className="text-4xl mb-14">ReFriFree<strong>로고</strong></p>
+        <p className="text-4xl mb-14 font-['Tenada']">ReFriFree</p>
         <div className="mx-96">
    
 
